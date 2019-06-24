@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{{block 'title'}}默认标题{{/block}}</title>
+  <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.css">
+  {{block 'head'}}{{/block}}
+</head>
+
+<body>
+  {{include '../_partials/head.html'}}
+  {{block 'body'}}{{/block}}
+  {{include '../_partials/foot.html'}}
+  <script src="/login/node_modules/bootstrap/dist/js/bootstrap.js"></script>
+  
+</body>
+
+</html>

@@ -1,0 +1,243 @@
+{{extend '../views/layouts/home.html'}}
+
+{{block 'title'}}{{'学生主页'}}{{/block}}
+{{block 'head'}}
+    <link rel="stylesheet" href="../public/css/headfoot.css">
+    <link rel="stylesheet" href="../public/css/stuzhuye.css">
+{{/block}}
+
+{{block 'body'}}
+    <div class="main">
+
+<!-- 左侧 -->
+        <div class="main-left">
+            <div class="hello">
+            {{ if islogin }}
+                欢迎您！{{ islogin[0].stuname }}同学
+            {{ else }}
+                你好
+            {{ /if }}
+            <br>
+            <a href="/stulogout">注销</a>
+            </div>
+                <div><label for="one">学生签到签退</label></a></div><br>
+                <div><label for="two">学生选课</label></div><br>
+                <div><label for="three">成果提交</label></div>
+        </div>
+<!-- 右侧 -->        
+        <form id="register_form" action="/stumain" method="post">
+        <div class="main-right">
+            <div class="right-big">
+
+                <li>
+                    <input checked type="radio" id="zero" name="bannner">
+                    <div>
+                        <div class="dd"><span>欢迎访问课程设计管理系统</span></div>
+                    </div>
+                </li>
+<!-- 学生签到 -->
+                <li>
+                        <input type="radio" id="one" name="bannner">
+                        <div>
+                            <div>
+                                <div class="dd1">
+                                    <div class="dd1-center">
+                                            <form  id="formId" class="reg-form" method="POST">
+                                                {{ if islogin[0].sking == 0}}
+                                                <div>
+                                                    <tr>
+                                                        <td>姓名：</td>
+                                                        <td>{{ islogin[0].stuname }}</td>
+                                                    </tr>
+                                                </div>
+                                                <div>
+                                                    <tr>
+                                                        <td>学号：</td>
+                                                        <td><span id="qdstusno" value="{{ islogin[0].stusno }}" >{{ islogin[0].stusno }}</span></td>
+                                                    </tr>
+                                                </div>
+                                                <div>
+                                                    <tr>
+                                                        <td>选择老师：</td>
+                                                        <td>
+                                                            <select id="slt">
+                                                                    {{ each allteacher }}
+                                                                    <option teasno={{ $value.sno }} isstart={{ $value.starclass }} classtimes={{ $value.classtimes}}  >{{ $value.name }}</option>
+                                                                    {{ /each }}
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                </div>
+                                                <div>
+                                                    <tr>
+                                                        <td>这是该老师的第</td>
+                                                        <td><label id="teaclasstime"></label> </td>
+                                                        <td>节课！</td>
+                                                    </tr>
+                                                </div>
+                                                <button id="btn11" type="button" disabled="true" onclick="qiandao()">签到</button>
+                                                {{ else }}
+                                                你已经在上课了！
+                                                <button ><a href="/stumain/xsqt?stusno={{ islogin[0].stusno }}">签退</a> </button>           
+                                                {{ /if }}
+                                            </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </li>
+<!-- 学生选题 -->
+                <li>
+                    <input type="radio" id="two" name="bannner">
+                    <div>
+                        <div>
+                            <div class="dd2">
+                                <div class="ischose">
+                                    {{ if islogin[0].stuchoose }}
+                                        您已经选题{{ islogin[0].stuchoose }} 号
+                                    {{ else }}
+                                        你还没有选题！！
+                                    {{ /if }}
+                                </div>
+                                <div class="dd2-table">
+                                    <table class="table001" id="dataTableDetail" cellspacing="0">
+                                        
+                                    <tr>
+                                        <th>编号</th>
+                                        <th>名称</th>
+                                    </tr>
+                                    {{ each subject }}
+                                    <tr>
+                                        <td>{{ $value.sbjsno }}</td>
+                                        <td>{{ $value.sbjname }}</td>
+                                        <td>
+                                        {{ if islogin[0].stuchoose }}
+                                            
+                                        {{ else }}
+                                            <a href="/stumain/xuanze?sbjsno={{ $value.sbjsno }}">选择</a>
+                                        {{ /if }}
+                                        </td>
+                                    </tr>
+                                    {{ /each }}
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+<!-- 学生成果上传 -->
+                <li>
+                    <input type="radio" id="three" name="bannner">
+                    <div>
+                        <div class="dd3">
+                            <div class="dd3-box">
+                            <form id="editform" action="postServlet2" method="post">
+                            </form>
+                            文件：<input type="file" class="wenjiansc" id="wenben"/>
+                            <br>
+                            <button onclick="schuan()">上传</button>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </div>
+        </div>
+        </form>
+    </div>
+
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script>
+       
+        var teasno=''
+        var classtimes=''
+        window.onload=function()
+        {
+            var oSlt=document.getElementById('slt');
+            var aOpt=oSlt.getElementsByTagName('option');
+            oSlt.onchange=function()
+                {
+                teasno=oSlt.options[oSlt.selectedIndex].getAttribute("teasno");
+                var isstart=oSlt.options[oSlt.selectedIndex].getAttribute("isstart");
+                classtimes=oSlt.options[oSlt.selectedIndex].getAttribute("classtimes");
+                if(isstart==0){
+                    alert("该老师还没有上课。");
+                    document.getElementById("btn11").disabled=ture;
+                }else{
+                    document.getElementById("teaclasstime").innerHTML=classtimes;
+                    document.getElementById("btn11").disabled=false;
+                }
+            }
+        }
+        
+        function qiandao(){
+            var qdstusno = document.getElementById('qdstusno').innerHTML
+            if(teasno===''){
+                alert("请选择老师！！")
+            }else{
+            var data = $.param({"qdstusno":qdstusno}) + "&"+$.param({"teasno":teasno}) 
+            + "&"+$.param({"classtimes":classtimes})+ "&"+ $("#formId").serialize()+"";
+            $.ajax({
+                url: '/stumain/xsqd',
+                type: 'post',
+                data: data,
+                processData:false,
+                success: function (data) {
+                    var err_code = data.err_code
+                    if (err_code === 0) {
+                        window.alert('签到成功!');
+                        window.location.href='/stumain'
+                    } else if (err_code === 1) {
+                        window.alert('签到失败!')
+                    }
+                  
+                }
+            })
+            }
+
+        }
+        
+        function schuan(){
+            var obj=document.getElementById('wenben');
+            var path=obj.value;
+            if(path === ''){
+                alert('请选择文件!')
+            }else{
+                //去除除了文件名外的其他地址
+                if (path.indexOf("\\") > -1) {
+                var  pathname = path.substr(path.lastIndexOf("\\")+1)
+                }
+                if (pathname.indexOf("\.") > -1) {
+                var pathType = pathname.substr(pathname.lastIndexOf("\.")+1)
+                }
+                var text = path;
+                var arr = text.split('\\');
+                var afterName = "";
+                for(var i=0; i<arr.length; i++){
+                    afterName += arr[i] + '/';
+                }
+                afterName = afterName.substring(0,afterName.length-1);
+                
+                var data = $.param({"path":afterName}) + "&"+$.param({"pathname":pathname}) 
+                + "&"+$.param({"pathtype":pathType}) + "&"+ $("#editform").serialize() + "";
+                $.ajax({
+                url: '/stumain/ktsc',
+                type: 'post',
+                data: data,
+                processData:false,
+                success: function (data) {
+                    var err_code = data.err_code
+                    if (err_code === 0) {
+                        window.alert('上传成功!');
+                    } else if (err_code === 1) {
+                        window.alert('上传失败!')
+                    }
+                  
+                }
+            })
+            }
+            
+        }
+    
+    
+    </script>
+{{/block}}

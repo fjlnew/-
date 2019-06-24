@@ -1,0 +1,336 @@
+{{extend '../views/layouts/home.html'}}
+
+{{block 'title'}}{{'教师主页'}}{{/block}}
+{{block 'head'}}
+<link rel="stylesheet" href="../public/css/headfoot.css">
+<link rel="stylesheet" href="../public/css/teazhuye.css">
+{{/block}}
+<!-- 
+    1)	口令登录管理；
+    2)	课题录入或导入管理；
+    3)	选题查看；
+    4)	出勤管理;
+    5)	成绩评定(平时30%+成果70%);
+    6)	成果查看。
+ -->
+{{block 'body'}}
+<div class="main">
+<!-- 左侧 -->
+    <div class="main-left">
+        <div class="hello">
+            {{ if tealogin }}
+            欢迎您！{{ tealogin[0].name }}老师!
+            <br>
+            这是您的第{{ tealogin[0].classtimes }}/N 次课！
+            {{ else }}
+            你好!
+            {{ /if }}
+            {{ if tealogin[0].starclass==0 }}
+            <br>
+            <button class="startclass"><a href="/teamain/startclass?teasno={{tealogin[0].sno}}">上课</a></button>
+            {{ else }}
+            <br>
+            <button class="endclass"><a href="/teamain/endclass?teasno={{tealogin[0].sno}}">下课</a></button>
+            {{ /if }}
+            <a href="/tealogout">注销</a>
+        </div>
+        <div><label for="one">课题录入</label></a></div><br>
+        <div><label for="two">成果查看</label></a></div><br>
+        <div><label for="three">出勤查看</label></div><br>
+        <div><label for="four">选题查看</label></a></div><br>
+        <div><label for="five">成绩评定</label></div>
+
+    </div>
+
+<!-- 右侧 -->
+    <div class="main-right">
+        <div class="right-big">
+<!-- 起始页面 -->
+            <li>
+                <input checked type="radio" id="zero" name="bannner">
+                <div>
+                    <div class="dd"><span>欢迎访问课程设计管理系统</span></div>
+                </div>
+            </li>
+<!-- 课题导入 -->
+            <li>
+                <input type="radio" id="one" name="bannner">
+                <div>
+                    <div class="dd1">
+                        <div class="dd1-top">
+                            <form id="ktdr">
+                                课题编号：<input checked class="in1" name="kcid" type="text" placeholder="编号为纯数字">
+                                课题名称：<input checked class="in2" name="kcmc" type="text">
+                                <input checked type="submit" value="导入" />
+                            </form>
+                        </div>
+                        <div class="dd1-button">
+
+                            <form id="ckkc">
+                                <h2>所有课题</h2>
+                                <div class="dd1-table">
+                                    <table class="table001" id="dataTableDetail" cellspacing="0">
+                                        <tr>
+                                            <td>编号</td>
+                                            <td>名称</td>
+                                        </tr>
+                                        <tr>
+                                            {{ each allsubject }}
+                                        <tr>
+                                            <td>{{ $value.sbjsno }}</td>
+                                            <td>{{ $value.sbjname }}</td>
+                                            <td>
+                                                <a href="/teamain/shanchu?sbjsno={{ $value.sbjsno }}">删除</a>
+                                            </td>
+                                        </tr>
+                                        {{ /each }}
+                                        </tr>
+                                    </table>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </li>
+<!-- 学生成果查看 -->
+            <li>
+                <input type="radio" id="two" name="bannner">
+                <div>
+                    <div class="dd2">
+                            <div class="tab-container">
+                                <ul class="tab-head">
+                                    <li>学生成果查看</li>
+                                </ul>
+                                <div class="dd1-table-other">
+                                    <table class="table001" id="dataTableDetail" cellspacing="0">
+                                        <tr>
+                                            <td>学生上传的文件名</td>
+                                        </tr>
+                                        {{ each stucguo}}
+                                        <tr>
+                                            <td><a href="#">{{ $value}}</a></td>
+                                        </tr>
+                                        {{ /each }}
+                                    </table>
+                                </div>
+                            </div>
+                    </div>
+
+                </div>
+            </li>
+<!-- 学生出勤 -->
+            <li>
+                <input type="radio" id="three" name="bannner">
+                <div>
+                    <div class="dd3">
+                        <div class="tab-container">
+                            <ul class="tab-head">
+                                <li>学生出勤查看</li>
+                            </ul>
+                            <div class="dd1-table-other">
+                                <table class="table001" id="dataTableDetail" cellspacing="0">
+                                    <tr>
+                                        <td>学生学号</td>
+                                        <td>学生姓名</td>
+                                        <td>第1节</td>
+                                        <td>第2节</td>
+                                        <td>第3节</td>
+                                        <td>第4节</td>
+                                        <td>第5节</td>
+                                        <td>第6节</td>
+                                        <td>第7节</td>
+                                        <td>第8节</td>
+                                        <td>第9节</td>
+                                        <td>第10节</td>
+                                        <td>总出勤</td>
+                                    </tr>
+                                    {{ each qiandao}}
+                                    <tr>
+                                        <td>{{ $value.stusno }}</td>
+                                        <td>{{ $value.stuname }}</td>
+                                        <td>{{ $value.class1}}</td>
+                                        <td>{{ $value.class2}}</td>
+                                        <td>{{ $value.class3}}</td>
+                                        <td>{{ $value.class4}}</td>
+                                        <td>{{ $value.class5}}</td>
+                                        <td>{{ $value.class6}}</td>
+                                        <td>{{ $value.class7}}</td>
+                                        <td>{{ $value.class8}}</td>
+                                        <td>{{ $value.class9}}</td>
+                                        <td>{{ $value.class10}}</td>
+                                        <td>{{ $value.allget}}</td>
+                                    </tr>
+                                    {{ /each }}
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+<!-- 学生选题 -->
+            <li>
+                <input type="radio" id="four" name="bannner">
+                <div>
+                    <div class="dd4">
+                        <div class="tab-container">
+                            <ul class="tab-head">
+                                    <li>学生选题查看</li>
+                            </ul>
+                            <div id="tab-panel" class="tab-panel">
+                                    <div class="xxtt">已选题学生</div>
+                                    <div class="dd1-table001">
+                                        <table class="table001" id="dataTableDetail" cellspacing="0">
+                                            {{ if ischosestu }}
+                                            <tr>
+                                                <td>学生学号</td>
+                                                <td>学生姓名</td>
+                                                <td>课题名称</td>
+                                            </tr>
+                                            {{ each ischosestu }}
+                                            <tr>
+                                                <td>{{ $value.stusno }}</td>
+                                                <td>{{ $value.stuname }}</td>
+                                                <td>{{ $value.sbjname }}</td>
+                                            </tr>
+                                            {{ /each }}
+                                            {{ else }}
+                                            <td>还没有学生选课</td>
+                                            {{/if}}
+                                        </table>
+                                    </div>
+                                    <div class="xxtt">未选题学生</div>
+                                    <div class="dd1-table001">
+                                        <table class="table001" id="dataTableDetail" cellspacing="0">
+                                            {{ if notchosestu }}
+                                            <tr>
+                                                <td>学生学号</td>
+                                                <td>学生姓名</td>
+                                            </tr>
+                                            {{ each notchosestu }}
+                                            <tr>
+                                                <td>{{ $value.stusno }}</td>
+                                                <td>{{ $value.stuname }}</td>
+                                            </tr>
+                                            {{ /each }}
+                                            {{ else }}
+                                            <td>学生已经全部选完</td>
+                                            {{/if}}
+                                        </table>
+                                    </div>
+                                    </p>
+                            </div>
+                        </div>
+                    </div>
+            </li>
+<!-- 学生成绩 -->
+            <li>
+                <input type="radio" id="five" name="bannner">
+                <div>
+                    <div class="dd5">
+                        <div class="tab-container">
+                            <ul class="tab-head">
+                                <li>学生成绩</li>
+                            </ul>
+                            <div id="tab-panel" class="tab-panel">
+                                <form id="editform" action="postServlet2" method="post">
+
+                                </form>
+                                <section id="panel-1">
+                                    <div class="dd1-table">
+                                        <table class="table001" id="dataTableDetail" cellspacing="0">
+                                            <tr>
+                                                <td>学生学号</td>
+                                                <td>学生姓名</td>
+                                                <td>平时成绩</td>
+                                                <td>考试成绩</td>
+                                                <td>总成绩</td>
+                                            </tr>
+                                            {{ each qiandao}}
+                                            <tr>
+                                                <td><label id="id{{ $value.stusno }}">{{ $value.stusno }}</label></td>
+                                                <td>{{ $value.stuname }}</td>
+                                                <td><label id="ps{{ $value.stusno }}">{{ $value.allget }}0</label></td>
+                                                <td><input checked class="testvalue" id="{{ $value.stusno }}"
+                                                        onchange="jisuancj(this)" type="text"
+                                                        value="{{ $value.testvalue }}" placeholder="考试成绩"></td>
+                                                <td><label id="qm{{ $value.stusno }}">{{ $value.qimovalue }}</label>
+                                                </td>
+                                                <td><a onclick="scalve(this)" href="#"  id="{{ $value.stusno }}">确认上传(修改)此成绩</a>
+                                                </td>
+                                            </tr>
+                                            {{ /each }}
+                                        </table>
+                                    </div>
+                                </section>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </div>
+    </div>
+</div>
+<script src="/node_modules/jquery/dist/jquery.js"></script>
+
+<script>
+        $('#ktdr').on('submit', function (e) {
+            e.preventDefault()
+            var formData = $(this).serialize()
+            $.ajax({
+                url: '/teamain/kcgr',
+                type: 'post',
+                data: formData,
+                dataType: 'json',
+                success: function (data) {
+                    var err_code = data.err_code
+                    if (err_code === 0) {
+                        window.alert('导入成功!');
+                        $('.in1').val("");
+                        $('.in2').val("");
+                    } else if (err_code === 1) {
+                        window.alert('编号已存在或输入不规范！')
+                    }
+                    console.log(data)
+                }
+            })
+        })
+
+
+        function jisuancj(obj) {
+            var pingshivalue = document.getElementById("ps" + obj.id).innerHTML;
+            var qimovalue = document.getElementById("qm" + obj.id);
+            qimovalue.innerHTML = Math.floor(pingshivalue * 0.3 + obj.value * 0.7);
+        }
+
+
+        function scalve(obj) {
+            var stusno = document.getElementById("id" + obj.id).innerHTML;
+            var pingshivalue = document.getElementById("ps" + obj.id).innerHTML;
+            var testvalue = document.getElementById("" + obj.id).value;
+            var qimovalue = document.getElementById("qm" + obj.id).innerHTML;
+
+            var data = $.param({"stusno":stusno}) + "&"+$.param({"pingshivalue":pingshivalue}) 
+            + "&"+$.param({"testvalue":testvalue}) + "&" +$.param({"qimovalue":qimovalue}) 
+            + "&"+ $("#editform").serialize() + "";
+            $.ajax({
+                url: '/teamain/cjsc',
+                type: 'post',
+                data: data,
+                processData:false,
+                success: function (data) {
+                    var err_code = data.err_code
+                    console.log(data)
+                    if (err_code === 0) {
+                        window.alert('成绩修改成功!');
+                    } else if (err_code === 1) {
+                        window.alert('成绩修改失败！')
+                    }
+                  
+                }
+            })
+        }
+
+</script>
+
+{{/block}}

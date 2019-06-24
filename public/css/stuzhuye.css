@@ -1,0 +1,147 @@
+*{
+    margin: 0;
+    bottom: 0;
+}
+.main{
+    height: 1000px;
+    width: 100%;
+    position: relative;
+}
+.main-left{
+    float: left;
+    height: 100%;
+    border: 1px solid;
+    width: 300px;
+    background-color: rgb(226, 214, 214);
+}
+.main-left div{
+    position: relative;
+    height: 90px;
+    width: 100%;
+    font-size: 20px;
+    text-align: center;
+    border: 1px solid;
+}
+.main-left div label{
+    position: absolute;
+    margin: 30px -46px;
+}
+.main-left div label:hover{
+    cursor: pointer;
+}
+.main-right{
+    height: 100%;
+    width: calc(100% - 300px);
+    border: 2px solid;
+    float: right;
+    background-color: rgb(217, 211, 223);
+}
+.right-big{
+    height: calc(100% - 40px);
+    margin: 20px 20px;
+    overflow: hidden;
+}
+.right-big input{
+    display: none;
+}
+.right-big li input+div{
+    display: none;
+}
+.right-big li input:checked+div{
+    display: inline;
+}
+.right-big li>div .dd{
+    height: 956px;
+    width: 100%;
+    position: relative;
+    margin-top: -24px;
+}
+.right-big li>div .dd1{
+    height: 956px;
+    width: 100%;
+    position: relative;
+    margin-top: -48px;
+}
+.right-big li>div .dd2{
+    height: 956px;
+    width: 100%;
+    position: relative;
+    margin-top: -72px;
+}
+.right-big li>div .dd3{
+    height: 956px;
+    width: 100%;
+    position: relative;
+    margin-top: -96px;
+}
+.dd{
+    text-align: center;
+    font-size: 40px;
+}
+.dd1{
+    background-color: green;
+}
+.dd2{
+    background-color: rgb(228, 220, 220);
+}
+.dd3{
+    background-color: rgb(218, 218, 207);
+}
+.dd2 .ischose{
+    text-align: center;
+    font-size: 25px;
+    color: yellow;
+    background-color: red;
+}
+
+.table001 tr td{
+    height: 64px;
+    width: 273px;
+}
+.dd2-table{
+    width:100%;
+    height: calc(100% - 36px);
+    overflow:scroll;
+    background-color: bisque;
+}
+.table001{
+    width:732px;
+    text-align:center;
+}
+
+.dd1 input{
+    display: inline;
+}
+.dd1-center{
+    height: 51%;
+    width: 50%;
+    position: absolute;
+    margin: 15% 30%;
+    font-size: 25px;
+}
+
+#slt{
+    height: 40px;
+    width: 130px;
+}
+.dd1-center div{
+    position: relative;
+    margin: 20px 45px;
+}
+.dd1-center button{
+    height: 50px;
+    width: 200px;
+    position: relative;
+    margin: 30px 45px;
+}
+
+
+.dd3 .wenjiansc{
+    display: inline;
+}
+
+.dd3-box{
+    position: absolute;
+    margin: 428px 295px;
+    font-size: 27px;
+}

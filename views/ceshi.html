@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+        <form id="editform" action="postServlet2" method="post">
+
+        </form>
+        文件：<input type="file" id="wenben"/>
+        <button onclick="schuan()">上传</button>
+</body>
+
+    <script src="/node_modules/jquery/dist/jquery.js"></script>
+    <script type="text/javascript" >
+        function schuan(){
+            var obj=document.getElementById('wenben');
+            var path=obj.value;
+            if(path === ''){
+                alert('请选择文件!')
+            }else{
+                //去除除了文件名外的其他地址
+                if (path.indexOf("\\") > -1) {
+                var  pathname = path.substr(path.lastIndexOf("\\")+1)
+                }
+                if (pathname.indexOf("\.") > -1) {
+                var pathType = pathname.substr(pathname.lastIndexOf("\.")+1)
+                }
+                var text = path;
+                var arr = text.split('\\');
+                var afterName = "";
+                for(var i=0; i<arr.length; i++){
+                    afterName += arr[i] + '/';
+                }
+                afterName = afterName.substring(0,afterName.length-1);
+                
+                var data = $.param({"path":afterName}) + "&"+$.param({"pathname":pathname}) 
+                + "&"+$.param({"pathtype":pathType}) + "&"+ $("#editform").serialize() + "";
+                $.ajax({
+                url: '/stumain/ktsc',
+                type: 'post',
+                data: data,
+                processData:false,
+                success: function (data) {
+                    var err_code = data.err_code
+                    if (err_code === 0) {
+                        window.alert('签到成功!');
+                    } else if (err_code === 1) {
+                        window.alert('签到失败!')
+                    }
+                  
+                }
+            })
+            }
+            
+        }
+    </script>
+</html>
